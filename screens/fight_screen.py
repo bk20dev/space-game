@@ -20,7 +20,7 @@ opponent_textures = [
 class FightScreen(Screen):
     opponents = []
     points = 0
-    health = 100
+    health = 0
 
     def __init__(self, window_size: (int, int), navigate):
         super().__init__(window_size, navigate)
@@ -74,7 +74,7 @@ class FightScreen(Screen):
             if opponent.rect.bottom > self.window_size[1] and not opponent.caused_damage:
                 opponent.caused_damage = True
                 self.health -= 20
-                if self.health != 0:
+                if self.health >= 0:
                     self.update_health(self.health)
                 else:
                     self.navigate("death")

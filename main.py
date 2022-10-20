@@ -4,8 +4,8 @@ import sys
 import pygame
 
 from screens.fight_screen import FightScreen
-from screens.screen import Screen
 from screens.loosing_screen import LoosingScreen
+from screens.screen import Screen
 
 
 def initialize_logging() -> None:
@@ -29,25 +29,19 @@ initialize_logging()
 pygame.init()
 surface = initialize_screen("Space game")
 
-# current_screens: list[Screen] = []
-# all_screens: dict[str, list[Screen]] = {}
+current_screens: list[Screen] = []
+all_screens: dict[str, list[Screen]] = {}
 
 
-# def select_screen(screen_id: str):
-#     current_screens.clear()
-#     current_screens.extend(all_screens[screen_id])
+def select_screen(screen_id: str):
+    current_screens.clear()
+    current_screens.extend(all_screens[screen_id])
 
 
-# all_screens["game"] = [FightScreen(window_size, select_screen)]
-# all_screens["death"] = [LoosingScreen(window_size, select_screen)]
-#
-# select_screen("game")
+all_screens["game"] = [FightScreen(window_size, select_screen)]
+all_screens["death"] = [LoosingScreen(window_size, select_screen)]
 
-def select_screen():
-    pass
-
-current_screens = list(FightScreen(window_size, select_screen))
-
+select_screen("game")
 
 while True:
     events = pygame.event.get()

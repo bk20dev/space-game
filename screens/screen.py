@@ -2,10 +2,9 @@ import pygame
 
 
 class Screen:
-    entities = []
-    controls = []
-
     def __init__(self, size: (int, int), navigate):
+        self.entities = []
+        self.controls = []
         self.navigate = navigate
         self.surface = pygame.surface.Surface(size)
 
