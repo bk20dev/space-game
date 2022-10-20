@@ -2,6 +2,7 @@ import logging
 import threading
 import random
 import pygame
+from threading import Timer
 
 from entities.ship import PlayerShip, OpponentShip
 from screens.screen import Screen
@@ -18,19 +19,32 @@ opponent_textures = [
 
 class FightScreen(Screen):
     opponents = []
+    points = 0
+    health = 100
 
-    def __init__(self, size: (int, int) = (720, 480)):
-        super().__init__(size)
-        self.ship = PlayerShip("assets/textures/playerShip1_orange.png", (0, 240))
+    def __init__(self, window_size: (int, int), navigate):
+        super().__init__(window_size, navigate)
+        self.window_size = window_size
+        self.ship = PlayerShip("assets/textures/playerShip1_orange.png", window_size, (0, 0))
         self.background = pygame.image.load("assets/textures/darkPurple.png")
-        self.score_text = Text("", (size[0]-18, 18))
+        self.score_text = Text("", topright=(window_size[0] - 18, 18))
+        self.health_text = Text("", topleft=(18, 18))
         self.update_score(0)
+        self.update_health(100)
         self.entities.extend([self.ship])
         self.controls.extend([self.score_text])
+        self.controls.extend([self.health_text])
         self.generate_opponents()
 
     def update_score(self, new_score: int):
         self.score_text.text = str(new_score).rjust(6, '0')
+
+    def add_points(self, amount: int):
+        self.points += amount
+        self.update_score(self.points)
+
+    def update_health(self, new_health: int):
+        self.health_text.text = str(new_health)
 
     def handle_events(self, events: list[pygame.event.Event]):
         super().handle_events(events)
@@ -46,12 +60,24 @@ class FightScreen(Screen):
             laser.movement()
             self.entities.append(laser)
             for opponent in self.opponents:
-                if laser.rect.colliderect(opponent.rect) & laser.alive:
+                if laser.rect.colliderect(opponent.rect) and laser.alive:
+                    self.add_points(10)
                     logging.debug("collided")
                     laser.collision()
-                    opponent.collision()
+                    dead = opponent.collision()
+                    if dead:
+                        self.add_points(50)
             if laser.rect.bottom < 0:
                 self.ship.lasers.pop(index)
+
+        for opponent in self.opponents:
+            if opponent.rect.bottom > self.window_size[1] and not opponent.caused_damage:
+                opponent.caused_damage = True
+                self.health -= 20
+                if self.health != 0:
+                    self.update_health(self.health)
+                else:
+                    self.navigate("death")
 
     def render_background(self, surface: pygame.Surface):
         surface_width, surface_height = self.surface.get_size()
@@ -62,6 +88,6 @@ class FightScreen(Screen):
 
     def generate_opponents(self):
         threading.Timer(5.0, self.generate_opponents).start()
-        opponent_ship = OpponentShip(random.choice(opponent_textures))
+        opponent_ship = OpponentShip(random.choice(opponent_textures), self.window_size)
         self.entities.append(opponent_ship)
         self.opponents.append(opponent_ship)

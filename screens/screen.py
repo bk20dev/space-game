@@ -5,7 +5,8 @@ class Screen:
     entities = []
     controls = []
 
-    def __init__(self, size: (int, int)):
+    def __init__(self, size: (int, int), navigate):
+        self.navigate = navigate
         self.surface = pygame.surface.Surface(size)
 
     def render(self, screen: pygame.Surface):

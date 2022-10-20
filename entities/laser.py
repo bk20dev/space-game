@@ -5,7 +5,7 @@ from threading import Timer
 
 class Laser:
     power = 20
-    velocity = 1
+    velocity = 2
     alive = True
 
     def __init__(self, position: (int, int) = (0, 0)):
