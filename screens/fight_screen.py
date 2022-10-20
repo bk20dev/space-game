@@ -41,11 +41,11 @@ class FightScreen(Screen):
         self.update_score(self.points)
 
     def update_health(self, new_health: int):
+        self.health = new_health
         self.health_text.text = str(new_health) + "%"
 
     def add_health(self, amount: int):
-        self.health += amount
-        self.update_health(self.health)
+        self.update_health(self.health + amount)
 
     def handle_events(self, events: list[pygame.event.Event]):
         super().handle_events(events)
@@ -56,6 +56,8 @@ class FightScreen(Screen):
 
     def render(self, screen: pygame.Surface):
         self.render_background(self.surface)
+        for opponent in self.opponents:
+            opponent.render(self.surface)
         super().render(screen)
         for index, laser in enumerate(self.player.lasers):
             laser.movement()
@@ -85,6 +87,7 @@ class FightScreen(Screen):
         self.generate_opponents()
 
     def stop(self):
+        self.opponents.clear()
         if self.opponent_timer is not None:
             self.opponent_timer.cancel()
 
@@ -96,8 +99,16 @@ class FightScreen(Screen):
                 surface.blit(self.background_image, (x, y))
 
     def generate_opponents(self):
-        self.opponent_timer = threading.Timer(5.0, self.generate_opponents)
+        spawning_speed = self.get_spawning_speed()
+        self.opponent_timer = threading.Timer(spawning_speed, self.generate_opponents)
         self.opponent_timer.start()
         opponent_ship = OpponentShip(random.choice(opponent_textures), self.window_size)
-        self.entities.append(opponent_ship)
         self.opponents.append(opponent_ship)
+
+    def get_spawning_speed(self) -> int:
+        if self.points < 500:
+            return 5
+        if self.points < 1500:
+            return 4
+        else:
+            return 3
