@@ -1,7 +1,9 @@
 import random
 import threading
-from entities.laser import Laser
+
 import pygame
+
+from entities.laser import Laser
 
 
 class Ship:
@@ -45,6 +47,7 @@ class PlayerShip(Ship):
     def damage(self):
         pygame.mixer.Sound("assets/audio/impactPunch_heavy_001.ogg").play()
 
+
 class OpponentShip(Ship):
     health = 100
     caused_damage = False
@@ -55,12 +58,12 @@ class OpponentShip(Ship):
         self.movement_x()
         self.movement_y()
 
-        spawnSounds = [
+        spawn_sounds = [
             "assets/audio/opponentSpawn_001.ogg",
             "assets/audio/opponentSpawn_002.ogg",
         ]
 
-        pygame.mixer.Sound(random.choice(spawnSounds)).play()
+        pygame.mixer.Sound(random.choice(spawn_sounds)).play()
 
     def movement_x(self):
         window_width, window_height = self.window_size
@@ -97,4 +100,3 @@ class OpponentShip(Ship):
             t.start()
             return True
         return False
-
