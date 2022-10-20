@@ -23,6 +23,7 @@ class Ship:
 
 class PlayerShip(Ship):
     lasers = []
+    can_shoot = True
 
     def __init__(self, texture, window_size: (int, int), position: [int, int] = (0, 0)):
         super().__init__(texture, window_size, position)
@@ -42,7 +43,14 @@ class PlayerShip(Ship):
             else:
                 self.rect.left = self.rect.left + self.velocity_x
         if key == pygame.K_SPACE:
-            self.lasers.append(Laser((self.rect.centerx, self.rect.top)))
+            if self.can_shoot:
+                self.set_can_shoot(False)
+                self.lasers.append(Laser((self.rect.centerx, self.rect.top)))
+                threading.Timer(0.5, lambda: self.set_can_shoot(True)).start()
+
+    def set_can_shoot(self, can_shoot):
+        print("setting can shoot to", can_shoot)
+        self.can_shoot = can_shoot
 
     def damage(self):
         pygame.mixer.Sound("assets/audio/impactPunch_heavy_001.ogg").play()
