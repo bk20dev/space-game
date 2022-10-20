@@ -2,8 +2,19 @@ import pygame
 
 
 class Screen:
-    def __init__(self, surface: pygame.Surface):
-        self.surface = surface
+    entities = []
+    controls = []
 
-    def render(self):
+    def __init__(self, size: (int, int)):
+        self.surface = pygame.surface.Surface(size)
+
+    def render(self, screen: pygame.Surface):
+        self.surface.fill('black')
+        for entity in self.entities:
+            entity.render(self.surface)
+        for control in self.controls:
+            control.render(self.surface)
+        screen.blit(self.surface, (0, 0))
+
+    def handle_events(self, events: list[pygame.event.Event]):
         pass

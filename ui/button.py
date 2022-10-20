@@ -8,8 +8,8 @@ class Button:
         self.surface = pygame.surface.Surface(size)
         self.position = position
 
-    def render(self, screen: pygame.Surface, color):
-        self.surface.fill(color)
+    def render(self, screen: pygame.Surface):
+        self.surface.fill("white")
         screen.blit(self.surface, self.position)
 
     def is_clicked(self, mouse: (int, int)) -> bool:
