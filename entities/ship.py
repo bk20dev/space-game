@@ -6,7 +6,7 @@ import pygame
 
 class Ship:
     velocity_x = 25
-    velocity_y = 5
+    velocity_y = 20
 
     def __init__(self, texture, window_size: (int, int), position: [int, int] = (0, 0)):
         self.surface = pygame.image.load(texture)
@@ -42,6 +42,8 @@ class PlayerShip(Ship):
         if key == pygame.K_SPACE:
             self.lasers.append(Laser((self.rect.centerx, self.rect.top)))
 
+    def damage(self):
+        pygame.mixer.Sound("assets/audio/impactPunch_heavy_001.ogg").play()
 
 class OpponentShip(Ship):
     health = 100
@@ -50,7 +52,8 @@ class OpponentShip(Ship):
     def __init__(self, texture, window_size: (int, int), position: [int, int] = (0, 0)):
         super().__init__(texture, window_size, position)
         self.rect.x = random.randint(0, self.window_size[0] - self.surface.get_size()[0])
-        self.movement()
+        self.movement_x()
+        self.movement_y()
 
         spawnSounds = [
             "assets/audio/opponentSpawn_001.ogg",
@@ -59,15 +62,18 @@ class OpponentShip(Ship):
 
         pygame.mixer.Sound(random.choice(spawnSounds)).play()
 
-    def movement(self):
+    def movement_x(self):
         window_width, window_height = self.window_size
-        threading.Timer(0.1, self.movement).start()
-        x = self.rect.x + random.randint(-5, 5)
+        threading.Timer(0.2, self.movement_x).start()
+        x = self.rect.x + random.randint(-15, 15)
         if x < 0:
             x = 0
         elif x > window_width:
             x = window_width - self.surface.get_size()[0]
         self.rect.x = x
+
+    def movement_y(self):
+        threading.Timer(0.5, self.movement_y).start()
         self.rect.y += self.velocity_y
 
     def anihilate(self):

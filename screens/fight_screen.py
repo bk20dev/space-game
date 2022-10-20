@@ -18,7 +18,7 @@ opponent_textures = [
 
 
 class FightScreen(Screen):
-    opponents = []
+    opponents: list[OpponentShip] = []
     points = 0
     health = 0
 
@@ -75,6 +75,7 @@ class FightScreen(Screen):
             if opponent.rect.bottom > self.window_size[1] and not opponent.caused_damage:
                 opponent.caused_damage = True
                 self.add_health(-20)
+                self.player.damage()
                 if self.health <= 0:
                     self.navigate("death")
 
