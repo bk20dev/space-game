@@ -4,10 +4,10 @@ text_color = (255, 255, 255, 255)
 
 
 class Text:
-    def __init__(self, text: str = "", position: (int, int) = (0, 0), **kwargs):
+    def __init__(self, text: str = "", position: (int, int) = (0, 0), text_size: int = 24, **kwargs):
         self.position = position
         self.text = text
-        self.font = pygame.font.SysFont("assets/fonts/kenvector_future.ttf", 24)
+        self.font = pygame.font.SysFont("assets/fonts/kenvector_future.ttf", text_size)
         self.kwargs = kwargs
 
     def render(self, screen: pygame.Surface):
