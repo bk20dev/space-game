@@ -1,4 +1,3 @@
-import logging
 import random
 import threading
 
@@ -34,11 +33,11 @@ class FightScreen(Screen):
         self.opponent_timer = None
 
     def update_score(self, new_score: int):
+        self.points = new_score
         self.score_text.text = str(new_score).rjust(6, '0')
 
     def add_points(self, amount: int):
-        self.points += amount
-        self.update_score(self.points)
+        self.update_score(self.points + amount)
 
     def update_health(self, new_health: int):
         self.health = new_health
@@ -65,7 +64,6 @@ class FightScreen(Screen):
             for opponent in self.opponents:
                 if laser.rect.colliderect(opponent.rect) and laser.alive:
                     self.add_points(10)
-                    logging.debug("collided")
                     laser.collision()
                     dead = opponent.collision()
                     if dead:

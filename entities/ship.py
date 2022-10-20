@@ -15,7 +15,6 @@ class Ship:
         self.position = [*position]
         self.window_size = window_size
         self.rect = self.surface.get_rect(topleft=(self.position[0], self.position[1]))
-        print(self.surface.get_size())
 
     def render(self, screen: pygame.Surface):
         screen.blit(self.surface, self.rect)
@@ -49,7 +48,6 @@ class PlayerShip(Ship):
                 threading.Timer(0.5, lambda: self.set_can_shoot(True)).start()
 
     def set_can_shoot(self, can_shoot):
-        print("setting can shoot to", can_shoot)
         self.can_shoot = can_shoot
 
     def damage(self):

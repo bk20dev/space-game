@@ -45,7 +45,7 @@ def select_screen(screen_id: str):
 all_screens["game"] = [FightScreen(window_size, select_screen)]
 all_screens["death"] = [LoosingScreen(window_size, select_screen)]
 
-select_screen("death")
+select_screen("game")
 
 while True:
     events = pygame.event.get()
