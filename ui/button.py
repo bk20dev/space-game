@@ -1,5 +1,3 @@
-import logging
-
 import pygame
 
 
@@ -15,4 +13,4 @@ class Button:
     def is_clicked(self, mouse: (int, int)) -> bool:
         px, py = self.position
         width, height = self.surface.get_size()
-        return mouse[0] in range(px, px+width) and mouse[1] in range(py, py+height)
+        return mouse[0] in range(px, px + width) and mouse[1] in range(py, py + height)

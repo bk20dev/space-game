@@ -12,7 +12,7 @@ def initialize_logging() -> None:
     logging.basicConfig(format=fmt, level=logging.NOTSET)
 
 
-def initialize_screen(name: str, size: (int, int) = (480, 320)) -> pygame.Surface:
+def initialize_screen(name: str, size: (int, int) = (720, 480)) -> pygame.Surface:
     pygame.display.set_caption(name)
     return pygame.display.set_mode(size=size)
 
@@ -23,8 +23,8 @@ def quit_game() -> None:
 
 
 initialize_logging()
+pygame.init()
 surface = initialize_screen("Space game")
-
 current_screens: list[Screen] = [FightScreen()]
 
 while True:

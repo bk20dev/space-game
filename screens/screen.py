@@ -9,7 +9,6 @@ class Screen:
         self.surface = pygame.surface.Surface(size)
 
     def render(self, screen: pygame.Surface):
-        self.surface.fill('black')
         for entity in self.entities:
             entity.render(self.surface)
         for control in self.controls:
