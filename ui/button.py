@@ -2,10 +2,9 @@ import pygame
 
 
 class Button:
-    def __init__(self, size: (int, int), position: (int, int) = (0, 0), text: str = "", text_size: int = 24, **kwargs):
+    def __init__(self, size: (int, int), text: str = "", text_size: int = 24, **kwargs):
         self.surface = pygame.surface.Surface(size)
         self.font = pygame.font.SysFont("assets/fonts/kenvector_future.ttf", text_size)
-        self.position = position
         self.kwargs = kwargs
         self.text = text
 
@@ -19,6 +18,6 @@ class Button:
         screen.blit(self.surface, button_rect)
 
     def is_clicked(self, mouse: (int, int)) -> bool:
-        px, py = self.position
+        px, py = self.surface.get_rect(**self.kwargs).topleft
         width, height = self.surface.get_size()
         return mouse[0] in range(px, px + width) and mouse[1] in range(py, py + height)
