@@ -34,8 +34,12 @@ all_screens: dict[str, list[Screen]] = {}
 
 
 def select_screen(screen_id: str):
+    for active in current_screens:
+        active.stop()
     current_screens.clear()
     current_screens.extend(all_screens[screen_id])
+    for active in current_screens:
+        active.start()
 
 
 all_screens["game"] = [FightScreen(window_size, select_screen)]

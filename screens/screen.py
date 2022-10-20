@@ -17,3 +17,9 @@ class Screen:
 
     def handle_events(self, events: list[pygame.event.Event]):
         pass
+
+    def start(self):
+        pass
+
+    def stop(self):
+        pass
